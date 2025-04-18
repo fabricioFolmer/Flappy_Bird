@@ -5,10 +5,9 @@ import json, os
 # Se o arquivo existir, ele será carregado e os valores serão atualizados
 class ConfigManager:
     default_config = {
-        "window_width": 1600,
-        "window_height": 900,
-        "title": "Flappy GLFW",
-        "fps": 60
+        "window_width": 1280,
+        "window_height": 720,
+        "window_title": "Flappy Dragon"
     }
 
     def __init__(self, filepath="config.json"):
@@ -24,9 +23,7 @@ class ConfigManager:
                     self.config.update(data)
                 except json.JSONDecodeError:
                     print("⚠️ Invalid JSON format. Using defaults.")
-     #   else:
-     #       self.save()
-
+                    
     def save(self):
         with open(self.filepath, "w") as f:
             json.dump(self.config, f, indent=4)
