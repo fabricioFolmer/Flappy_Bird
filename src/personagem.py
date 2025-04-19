@@ -51,11 +51,18 @@ class Personagem:
         if not self.esta_invencivel and self.vidas > 0:
             # Diminui a vida e ativa a invencibilidade
             self.vidas -= 1
-            self.esta_invencivel = True
-            # Cria uma thread para remover a invencibilidade após o tempo de duração
-            # (não bloqueia o jogo enquanto espera)
-            t = Thread(target=self.removerInvencibilidade, args=(self.duracao_invencibilidade,))
-            t.start()
+           
+            # Se ainda possui vidas, ativa a invencibilidade
+            if self.vidas > 0:
+                self.ativarInvencibilidade()
+    
+    def ativarInvencibilidade(self):
+        # Ativa a invencibilidade do personagem
+        self.esta_invencivel = True
+        # Cria uma thread para remover a invencibilidade após o tempo de duração
+        # (não bloqueia o jogo enquanto espera)
+        t = Thread(target=self.removerInvencibilidade, args=(self.duracao_invencibilidade,))
+        t.start()
 
     def removerInvencibilidade(self, duracao_invencibilidade):
         # Remove a invencibilidade do personagem após o tempo de duração

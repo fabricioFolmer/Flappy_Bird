@@ -1,9 +1,10 @@
-import glfw
+import glfw, numpy as np
 from OpenGL.GL import *
 from OpenGL.GLUT import *  # Import GLUT for glutBitmapCharacter
 from OpenGL.GLUT.fonts import GLUT_BITMAP_HELVETICA_12, GLUT_BITMAP_HELVETICA_18, GLUT_BITMAP_TIMES_ROMAN_10, GLUT_BITMAP_TIMES_ROMAN_24
 from src.parametros import Parametros
 from src.texturas import carregarTextura
+from PIL import Image  # Biblioteca para manipular imagens
 
 class Window:
     def __init__(self):
@@ -12,6 +13,8 @@ class Window:
         self.id_textura_background = carregarTextura('texturas/background.jpg')
         self.id_textura_scoreboard_background = carregarTextura('texturas/scoreboard_background.jpg')
         self.id_textura_vida = carregarTextura('texturas/vida.png')
+        self.id_textura_inicio_de_jogo = carregarTextura('texturas/inicio_de_jogo.png')
+        self.id_textura_fim_de_jogo = carregarTextura('texturas/fim_de_jogo.png')
 
 
     def iniciarJanela():
@@ -38,7 +41,6 @@ class Window:
         y_pos = (monitor_size.height - window_size[1]) // 2
         glfw.set_window_pos(janela, x_pos, y_pos)
         
-
         # Configurações da janela
         glfw.make_context_current(janela)                   # Faz a janela atual
         glfw.swap_interval(1)                               # Limita a 60 FPS
@@ -130,4 +132,14 @@ class Window:
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(char))
             # glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord(char))
 
+    def desenharInicioDeJogo(self):
+        # Desenha a tela de fim de jogo no centro da tela
+        # Largura em relação a janela = 0.5
+        # Altura em relação a janela = 0.555
+        self.desenharTextura(self.id_textura_inicio_de_jogo, -0.25, -0.2775, 0.25, -0.2775, 0.25, 0.2775, -0.25, 0.2775)
         
+    def desenharFimDeJogo(self):
+        # Desenha a tela de fim de jogo no centro da tela
+        # Largura em relação a janela = 0.5
+        # Altura em relação a janela = 0.555
+        self.desenharTextura(self.id_textura_fim_de_jogo, -0.25, -0.2775, 0.25, -0.2775, 0.25, 0.2775, -0.25, 0.2775)

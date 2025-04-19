@@ -9,12 +9,12 @@ Criar um programa no formato do jogo Flappy Bird utilizando os conceitos de comp
 | ✅ | Criar Motor de Geração, Movimento e Colisão de Obstáculos                           |
 | ✅ | Criar Mecânica de Múltiplas Vidas                                                   |
 | ✅ | Criar Scoreboard de Pontos e Vidas e Mostrar em Tela                                |
-| ❌ | Ao acabar as vidas, mostrar score board e botão de reiniciar ou sair                |
+| ✅ | Ao acabar as vidas, mostrar scoreboard e botão de reiniciar ou sair                 |
 | ❌ | Criar Powerup aleatório de ganhar vida                                              |
-| ❌ | Antes de começar o jogo, mostrar popup instruindo a apertar espaço para iniciar     |
+| ✅ | Antes de começar o jogo, mostrar popup instruindo a apertar espaço para iniciar     |
 | ❌ | Realizar Ajustes Finos na Documentação e adicionar prints do programa em execução   |
 | ❌ | Adicionar Música de Plano de Fundo?                                                 |
-| ❌ | Evoluir Detecção de Colisão                                                         |
+| ❌ | Evoluir Detecção de Colisão, e física de pulo e queda                               |
 
 ## Requisitos do programa
 - Deve ser feito na linguagem Python;

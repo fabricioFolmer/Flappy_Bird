@@ -24,6 +24,8 @@ class Jogo:
         
         # Variável para controlar o início do jogo. Serve para o jogo não inicar com o personagem caindo.
         game_started = False
+        game_over = False
+        game_over_freeze = False
         
         # Variável para controlar o pressionamento da tecla de espaço.
         # Serve para evitar que o personagem pule várias vezes seguidas se o usuário segurar a tecla espaço.
@@ -46,8 +48,15 @@ class Jogo:
             # Verifica se a tecla de espaço foi pressionada ou se foi clicado na tela
             if glfw.get_key(janela, glfw.KEY_SPACE) == glfw.PRESS or glfw.get_mouse_button(janela, glfw.MOUSE_BUTTON_LEFT) == glfw.PRESS:
                 
-                # Se o jogo ainda não iniciou, o inicia
+                # Se o jogo não está em andamento, o inicia
                 if not game_started:
+
+                    # Se se trata de um recomeço de jogo, reinicia as variáveis
+                    if game_over is True:
+                        player = Personagem()
+                        torres = []
+                        game_over = False
+                        print('Recomeço de jogo')
                     game_started = True
                     tempo_inicio_jogo = tempo_atual
                     print('Game started')
@@ -106,6 +115,10 @@ class Jogo:
             # Desenha o scoreboard no canto superior esquerdo
             window.desenharScoreboard(vidas = player.vidas, pontos = player.pontos)
 
+            # Se o jogo não inicou nenhuma vez, desenha a tela de boas vindas
+            if game_started is False and game_over is False:
+                window.desenharInicioDeJogo()
+
             # Realiza os tratamentos de colisão após desenhar todos os objetos em tela
             if game_started is True:
                 if colisao is True:
@@ -113,10 +126,25 @@ class Jogo:
             
                 print(f'Vidas: {player.vidas}, Colidiu: {colisao}, Invencível: {player.esta_invencivel}')  # Usado apenas para debug TODO Remover
 
-            # Se acabaram as vidas, finaliza o jogo
+            # Se acabaram as vidas
             if player.vidas <= 0:
-                print('Game Over')
-                break
+
+                # Aguarda 2 segundos antes de reiniciar o jogo, para o jogador ver a tela de Game Over
+                if game_over_freeze is True:
+                    time.sleep(2)
+                    game_over_freeze = False
+
+                # Se o jogo está em andamento, registra o game over. Isso será verdadeiro apenas no 1º frame após o game over
+                if game_started is True:
+                    game_over_freeze = True # No próximo frame, o jogo irá parar por 2 segundos para o jogador ver a tela de Game Over
+                    game_over = True
+                    game_started = False
+                
+                # Desenha a tela de Game Over
+                window.desenharFimDeJogo()
+                
+
+
 
 #
             # Desenho de um pixel vermelho para debug
