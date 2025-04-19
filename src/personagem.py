@@ -7,23 +7,23 @@ class Personagem:
     def __init__(self):
         
         # Instancia classe de parâmetros do jogo
-        params = Parametros()
-        
+        cfg = Parametros()
+
         # Configurações do personagem
-        self.largura = params.get('personagem_largura')
-        self.altura  = params.get('personagem_altura')
+        self.largura = cfg.personagem_largura
+        self.altura  = cfg.personagem_altura
         self.teto    =  1 - self.altura / 2    # Limite superior da altura do personagem
         self.chao    = -1 + self.altura / 2    # Limite inferior da altura do personagem
-        self.vidas   = params.get('personagem_vidas')
-        self.pontos  = params.get('personagem_pontos')
+        self.vidas   = cfg.personagem_vidas
+        self.pontos  = cfg.personagem_pontos
         self.esta_invencivel = False
-        self.duracao_invencibilidade = params.get('personagem_duracao_invencibilidade')
+        self.duracao_invencibilidade = cfg.personagem_duracao_invencibilidade
 
         # Carrega a imagem com a textura do personagem
         self.textura_id = carregarTextura('texturas/personagem.png')
         self.textura_invencivel_id = carregarTextura('texturas/personagem_invencivel.png')
 
-        self.setPosicao(params.get('personagem_posicao_horizontal'), 0)
+        self.setPosicao(cfg.personagem_posicao_horizontal, 0)
 
     # Função que atualiza a posição do personagem, recebendo a posição central dele (x e y) e calculando os cantos
     def setPosicao(self, x, y):

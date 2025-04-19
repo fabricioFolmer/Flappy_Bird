@@ -12,13 +12,10 @@ class Jogo:
         
         # Inicia a janela do jogo
         janela = Window.iniciarJanela()
-
-        # Carrega texturas
-        textura_background = carregarTextura('texturas/background.jpg')
-        red_pixel_texture_id = carregarTextura('texturas/red_pixel.png')
+        red_pixel_texture_id = carregarTextura('texturas/red_pixel.png') # Usado apenas para debug TODO Remover
 
         # Instancia classes
-        config = Parametros()
+        cfg = Parametros()
         player = Personagem()
         window = Window()
         
@@ -34,17 +31,12 @@ class Jogo:
 
         # Variáveis para controles dos obstáculos
         torres = [] # Irá armazenar a posição de todos os obstáculos
-        tempo_geracao_1o_obstaculo = config.get('torre_tempo_1a_geracao') # Tempo para gerar o 1º obstáculo
-        tempo_geracao_obstaculos = config.get('torre_tempo_entre_geracao') # Tempo de geração dos obstáculos
 
         # Loop principal do jogo
         while not glfw.window_should_close(janela):
             
             # Limpa a tela
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-            
-            # Desenha o background
-            window.desenharTextura(textura_background, -1, -1, 1, -1, 1, 1, -1, 1)
             
             # Atualiza o tempo
             tempo_atual = time.time()
@@ -64,7 +56,7 @@ class Jogo:
                     espaco_pressionado_no_frame_anterior = True
 
                     # Registra um pulo
-                    velocidade = config.get('personagem_velocidade_pulo')
+                    velocidade = cfg.valor_velocidade_pulo
             else:
                 espaco_pressionado_no_frame_anterior = False
             
@@ -72,42 +64,54 @@ class Jogo:
                 
                 # Atualiza a altura do personagem
                 player.setPosicao(player.centro_x, player.centro_y + velocidade * delta_time) # Atualiza a altura com base na velocidade e no tempo desde o último frame
-                velocidade += config.get('valor_gravidade') * delta_time  # Aplica a gravidade à velocidade
+                velocidade += cfg.valor_gravidade * delta_time  # Aplica a gravidade à velocidade
                 
-                # Se já se passou o tempo mínimo para gerar a torre, o faz
-                if (len(torres) == 0 and tempo_atual - tempo_inicio_jogo >= tempo_geracao_1o_obstaculo) or (len(torres) > 0 and tempo_atual - tempo_geracao_ultimo_obstaculo >= tempo_geracao_obstaculos):
+                # Se já se passou o tempo mínimo para gerar a torre, gera uma nova torre
+                if (len(torres) == 0 and tempo_atual - tempo_inicio_jogo >= cfg.torre_tempo_1a_geracao) or (len(torres) > 0 and tempo_atual - tempo_geracao_ultimo_obstaculo >= cfg.torre_tempo_entre_geracao):
                     torres.append(Torre()) # Instancia um novo obstáculo
                     
-                    # torres.append([1 + largura_obstaculo / 2, random.uniform(-altura_maxima_centro_gap, altura_maxima_centro_gap)]) # Adiciona obstáculo com posição vertical aleatória, um pouco além do canto direito da tela
                     tempo_geracao_ultimo_obstaculo = tempo_atual
                 
                 # Movimenta as torres para a esquerda
+                colisao = False
                 for t in torres:
                     t.movimentar(delta_time)
-                    # Se o obstáculo sair da tela, remove-o da lista
-                    if t.inf_canto_sup_dir_x < -1:
-                        print('Removendo obstáculo')
-                        torres.remove(t)
-                        break
                     
-            # Desenha o personagem na tela
-            window.desenharJogador(player)
+                    # Detecta colisão entre o personagem e os obstáculos
+                    if t.colidiu(player) is True:
+                        colisao = True
 
+                    # Detecta se o personagem passou completamente pelo obstáculo e registra um ponto se sim
+                    if t.gerou_ponto is False and player.canto_sup_esq_x > t.inf_canto_sup_dir_x:
+                        player.pontos += 1
+                        t.gerou_ponto = True
+
+                # Remove torres que saíram da tela
+                for i in torres:
+                    if i.inf_canto_sup_dir_x < -1:
+                        torres.remove(i)
+                        break
+
+                    
+            # Desenha o background
+            window.desenharBackground()
+            
             # Desenha as torres em tela
             for i in torres:
                 window.desenharTorre(i)
-                
 
-            # Detecta colisão entre o personagem e os obstáculos
-            colisao = False # Usado apenas para debug TODO Remover
-            for i in torres:
-                if i.colidiu(player) is True:
-                    print('Colidiu')
+            # Desenha o personagem na tela
+            window.desenharJogador(player)
+                
+            # Desenha o scoreboard no canto superior esquerdo
+            window.desenharScoreboard(vidas = player.vidas, pontos = player.pontos)
+
+            # Realiza os tratamentos de colisão após desenhar todos os objetos em tela
+            if game_started is True:
+                if colisao is True:
                     player.registrarColisao()
-                    colisao  = True # Usado apenas para debug TODO Remover
-                    break
             
-            print(f'Vidas: {player.vidas}, Colidiu: {colisao}, Invencível: {player.esta_invencivel}')  # Usado apenas para debug TODO Remover
+                print(f'Vidas: {player.vidas}, Colidiu: {colisao}, Invencível: {player.esta_invencivel}')  # Usado apenas para debug TODO Remover
 
             # Se acabaram as vidas, finaliza o jogo
             if player.vidas <= 0:

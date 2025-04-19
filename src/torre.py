@@ -9,11 +9,15 @@ class Torre:
         params = Parametros()
         
         # Configurações da Torre
-        self.largura        = params.get('torre_largura')
-        self.altura         = params.get('torre_altura')
-        self.altura_do_gap  = params.get('torre_altura_do_gap')
-        self.velocidade     = params.get('torre_velocidade_movimento') # Velocidade dos obstáculos
+        self.largura        = params.torre_largura
+        self.altura         = params.torre_altura
+        self.altura_do_gap  = params.torre_altura_do_gap
+        self.velocidade     = params.torre_velocidade_movimento # Velocidade dos obstáculos
         
+        # Variáveis para garantir que um par de torres não gere mais que um ponto no jogo
+        self.gerou_ponto = False
+        self.torre_colidiu = False
+
         # Carrega a imagem com a textura do personagem
         self.textura_superior_id = carregarTextura('texturas/torre_superior.png')
         self.textura_inferior_id = carregarTextura('texturas/torre_inferior.png')
@@ -74,10 +78,12 @@ class Torre:
 
         # Torre Superior
         if player.canto_inf_dir_x >= self.sup_canto_inf_esq_x and player.canto_inf_esq_x <= self.sup_canto_inf_dir_x and player.canto_sup_dir_y >= self.sup_canto_inf_esq_y and player.canto_inf_dir_y <= self.sup_canto_sup_dir_y:
+            self.torre_colidiu = True
             return True 
         
         # Torre Inferior
         if player.canto_inf_dir_x >= self.inf_canto_inf_esq_x and player.canto_inf_esq_x <= self.inf_canto_inf_dir_x and player.canto_sup_dir_y >= self.inf_canto_inf_esq_y and player.canto_inf_dir_y <= self.inf_canto_sup_dir_y:
+            self.torre_colidiu = True
             return True
         
         return False
