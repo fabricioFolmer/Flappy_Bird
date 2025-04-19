@@ -38,7 +38,12 @@ class Window:
 
     # Renderiza o jogador na tela
     def desenharJogador(self, player):
-        self.desenharTextura(player.textura_id, player.canto_inf_esq_x, player.canto_inf_esq_y, player.canto_inf_dir_x, player.canto_inf_dir_y, player.canto_sup_dir_x, player.canto_sup_dir_y, player.canto_sup_esq_x, player.canto_sup_esq_y)
+        
+        # Se estiver invencível, desenha o personagem com uma textura diferente
+        if player.esta_invencivel:
+            self.desenharTextura(player.textura_invencivel_id, player.canto_inf_esq_x, player.canto_inf_esq_y, player.canto_inf_dir_x, player.canto_inf_dir_y, player.canto_sup_dir_x, player.canto_sup_dir_y, player.canto_sup_esq_x, player.canto_sup_esq_y)
+        else:
+            self.desenharTextura(player.textura_id, player.canto_inf_esq_x, player.canto_inf_esq_y, player.canto_inf_dir_x, player.canto_inf_dir_y, player.canto_sup_dir_x, player.canto_sup_dir_y, player.canto_sup_esq_x, player.canto_sup_esq_y)
 
     # Desenha a torre na tela
     def desenharTorre(self, torre):

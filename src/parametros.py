@@ -15,6 +15,9 @@ class Parametros:
         "personagem_largura": 0.15,                 # Largura do personagem (em relação à largura da janela)
         "personagem_altura": 0.225,                 # Altura do personagem (em relação à altura da janela)
         "personagem_velocidade_pulo": 2,            # Velocidade do pulo (em relação à altura da janela por segundo)
+        "personagem_vidas": 3,                      # Número de vidas do personagem
+        "personagem_pontos": 0,                     # Pontos do personagem
+        "personagem_duracao_invencibilidade": 3,    # Duração da invencibilidade (em segundos)
 
         "torre_tempo_1a_geracao": 0.5,              # Tempo para gerar o 1º obstáculo (em segundos)
         "torre_tempo_entre_geracao": 3,             # Tempo entre a geração de obstáculos (em segundos)

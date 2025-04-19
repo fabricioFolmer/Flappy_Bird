@@ -99,16 +99,20 @@ class Jogo:
                 
 
             # Detecta colisão entre o personagem e os obstáculos
-            colisao  = False
+            colisao = False # Usado apenas para debug TODO Remover
             for i in torres:
                 if i.colidiu(player) is True:
                     print('Colidiu')
-                    colisao  = True
+                    player.registrarColisao()
+                    colisao  = True # Usado apenas para debug TODO Remover
                     break
-            if colisao is True:
-                print('Colidiu')
-            else:
-                print('OK')
+            
+            print(f'Vidas: {player.vidas}, Colidiu: {colisao}, Invencível: {player.esta_invencivel}')  # Usado apenas para debug TODO Remover
+
+            # Se acabaram as vidas, finaliza o jogo
+            if player.vidas <= 0:
+                print('Game Over')
+                break
 
 #
             # Desenho de um pixel vermelho para debug
