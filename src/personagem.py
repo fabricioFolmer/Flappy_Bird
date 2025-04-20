@@ -1,7 +1,7 @@
-from src.texturas import carregarTextura
-from src.parametros import Parametros
 import time
 from threading import Thread
+from src.texturas import carregarTextura
+from src.parametros import Parametros
 
 class Personagem:
     def __init__(self):
@@ -44,7 +44,6 @@ class Personagem:
         self.canto_sup_esq_y = y + self.altura  / 2
         self.centro_x = x
         self.centro_y = y
-        self.posicao = (self.canto_inf_esq_x, self.canto_inf_esq_y, self.canto_inf_dir_x, self.canto_inf_dir_y, self.canto_sup_dir_x, self.canto_sup_dir_y, self.canto_sup_esq_x, self.canto_sup_esq_y)
 
     def registrarColisao(self):
         # Se o personagem não estiver invencível, diminui a vida
@@ -61,7 +60,7 @@ class Personagem:
         self.esta_invencivel = True
         # Cria uma thread para remover a invencibilidade após o tempo de duração
         # (não bloqueia o jogo enquanto espera)
-        t = Thread(target=self.removerInvencibilidade, args=(self.duracao_invencibilidade,))
+        t = Thread(target=self.removerInvencibilidade, args=(self.duracao_invencibilidade,)) # TODO Tentar resolver sem threads
         t.start()
 
     def removerInvencibilidade(self, duracao_invencibilidade):
