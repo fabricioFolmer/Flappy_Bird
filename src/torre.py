@@ -2,6 +2,8 @@ import random
 from src.texturas import carregarTextura
 from src.parametros import Parametros
 
+# Cada instancia da classe Torre representa um par de torres (superior e inferior) que formam um obstáculo no jogo
+# O espaço entre as torres é chamado de gap, e a altura do gap é determinada por uma variável de configuração
 class Torre:
     def __init__(self):
 
