@@ -24,10 +24,13 @@ if __name__ == "__main__":
     # Inicializa variáveis de controle do jogo
     tempo_no_frame_anterior = time.time()                           # Tempo do frame anterior. Usado para calcular o tempo entre frames.
 
-    # Variável para controlar o início do jogo. Serve para o jogo não inicar com o personagem caindo.
+    # Variáveis para controlar o estado do jogo.
     game_started = False
     game_over = False
     game_over_freeze = False
+
+    # Variável para controlar o tempo restante de invencibilidade do personagem.
+    countdown_invencibilidade = None
 
     # Variável para controlar o pressionamento da tecla de espaço.
     # Serve para evitar que o personagem pule várias vezes seguidas se o usuário segurar a tecla espaço.
@@ -66,11 +69,11 @@ if __name__ == "__main__":
                 tempo_cooldown_pwr_up = cfg.power_up_tempo_entre_geracao # Tempo de cooldown do power up
                 print('Game started')
 
+            # Se a tecla de espaço foi pressionada no frame atual, registra um pulo no personagem
             if espaco_pressionado_no_frame_anterior is False:
                 espaco_pressionado_no_frame_anterior = True
-
-                # Registra um pulo
                 velocidade = cfg.valor_velocidade_pulo
+        
         else:
             espaco_pressionado_no_frame_anterior = False
         
@@ -80,6 +83,17 @@ if __name__ == "__main__":
             player.setPosicao(player.centro_x, player.centro_y + velocidade * delta_time) # Atualiza a altura com base na velocidade e no tempo desde o último frame
             velocidade += cfg.valor_gravidade * delta_time  # Aplica a gravidade à velocidade
             
+            # Reduz o tempo do último frame nas variáveis de contagem regressiva
+            tempo_prox_pwr_up -= delta_time
+            tempo_cooldown_pwr_up = max(tempo_cooldown_pwr_up - delta_time, 0)
+            if countdown_invencibilidade is not None:
+                countdown_invencibilidade -= delta_time
+
+            # Se o tempo de invencibilidade do personagem estiver zerado, desativa a invencibilidade
+            if countdown_invencibilidade is not None and countdown_invencibilidade <= 0:
+                player.esta_invencivel = False
+                countdown_invencibilidade = None
+
             # Se já se passou o tempo mínimo para gerar a torre, gera uma nova torre
             if (len(torres) == 0 and tempo_atual - tempo_inicio_jogo >= cfg.torre_tempo_1a_geracao) or (len(torres) > 0 and tempo_atual - tempo_geracao_ultimo_obstaculo >= cfg.torre_tempo_entre_geracao):
                 torres.append(Torre()) # Instancia um novo obstáculo
@@ -109,10 +123,6 @@ if __name__ == "__main__":
                 if t.inf_canto_sup_dir_x < -1:
                     torres.remove(t)
                     break
-
-            # Reduz o tempo do último frame no countdown e no cooldown do power up
-            tempo_prox_pwr_up -= delta_time
-            tempo_cooldown_pwr_up = max(tempo_cooldown_pwr_up - delta_time, 0)
 
             # Se já se passou o tempo mínimo para gerar o power up, gera um novo power up
             if tempo_prox_pwr_up <= 0:
@@ -172,9 +182,15 @@ if __name__ == "__main__":
         # Realiza os tratamentos de colisão após desenhar todos os objetos em tela
         if game_started is True:
             if colisao is True:
-                player.registrarColisao()
-        
-            # print(f'Colidiu: {colisao}, Tempo Próximo Power Up: {tempo_prox_pwr_up:.2f}, Cooldown: {tempo_cooldown_pwr_up:.2f}')  # Usado apenas para debug # TODO Remover
+                # Se o personagem não estiver invencível, diminui a vida
+                if not player.esta_invencivel and player.vidas > 0:
+                    # Diminui a vida e ativa a invencibilidade
+                    player.vidas -= 1
+                
+                    # Se ainda possui vidas, ativa a invencibilidade
+                    if player.vidas > 0:
+                        player.esta_invencivel = True
+                        countdown_invencibilidade = cfg.personagem_duracao_invencibilidade # Inicia o countdown da invencibilidade
 
         # Se acabaram as vidas
         if player.vidas <= 0:
