@@ -3,3 +3,4 @@ glfw
 Pillow
 PyOpenGL
 PyOpenGL_accelerate
+pygame

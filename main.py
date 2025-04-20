@@ -1,10 +1,12 @@
-import glfw, time, random
+import glfw, time, random, threading
 from OpenGL.GL import *
 from src.parametros import Parametros
 from src.janela import Window
 from src.personagem import Personagem
 from src.torre import Torre
 from src.power_up import PowerUp
+from src.sound_mixer import iniciarSoundtrack
+
 
 
 if __name__ == "__main__":
@@ -12,6 +14,9 @@ if __name__ == "__main__":
     # Inicia a janela do jogo
     janela = Window.iniciarJanela()
 
+    # Inicia a soundtrack do jogo em uma Thread exclusiva
+    threading.Thread(target=iniciarSoundtrack, daemon=True).start()
+    
     # Instancia classes
     cfg = Parametros()
     player = Personagem()

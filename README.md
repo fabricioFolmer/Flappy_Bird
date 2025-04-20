@@ -1,6 +1,12 @@
 ## Descrição
 Programa no formato do jogo Flappy Bird utilizando a API do OpenGL para Python para implementar.
 
+## Disclaimer
+- A biblioteca `Pygame` foi utilizada exclusivamente para reprodução de músicas durante a execução do jogo, uma funcionalidade que não é oferecida nativamente pelo Python;
+- As faixas de áudio presentes na pasta `soundtrack` pertencem à trilha sonora original do jogo Cuphead e estão sujeitas a direitos autorais;
+- O plano de fundo do jogo foi retirado de um dos níveis de Cuphead;
+- Com exceção dos elementos visuais mencionados acima, todas as demais artes foram geradas com o auxílio de Inteligência Artificial Generativa.
+
 ## Lista de Tarefas
 |   |    Descrição                                                                         |
 |---|--------------------------------------------------------------------------------------|
@@ -13,12 +19,12 @@ Programa no formato do jogo Flappy Bird utilizando a API do OpenGL para Python p
 | ✅ | Criar Powerup aleatório de ganhar vida                                              |
 | ✅ | Antes de começar o jogo, mostrar popup instruindo a apertar espaço para iniciar     |
 | ✅ | Revisar Código e Documentação e adicionar prints do programa em execução no Git     |
-| ❌ | Adicionar Música de Plano de Fundo?                                                 |
+| ✅ | Adicionar Trilha Sonora                                                             |
 | ❌ | Evoluir Detecção de Colisão, e física de pulo e queda                               |
 
 ## Requerimentos para Execução
 - Python 3.10;
-- Instação das seguintes bibliotecas: `pip install numpy glfw Pillow PyOpenGL PyOpenGL_accelerate`.
+- Instação das seguintes bibliotecas: `pip install numpy glfw Pillow PyOpenGL PyOpenGL_accelerate pygame`.
 
 ## Screenshots do Jogo em Execução
 
