@@ -8,7 +8,6 @@ from src.power_up import PowerUp
 from src.sound_mixer import iniciarSoundtrack
 
 
-
 if __name__ == "__main__":
 
     # Inicia a janela do jogo

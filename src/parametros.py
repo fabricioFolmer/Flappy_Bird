@@ -10,14 +10,14 @@ class Parametros:
         self.janela_titulo = "Flappy Dragon"            # Título da janela
 
         # Variáveis de física
-        self.valor_gravidade = -9.80665 /2              # Aceleração da gravidade (m/s²)
+        self.valor_gravidade = -4                       # Aceleração da gravidade fictícia, nesse jogo (m/s²)
         self.valor_velocidade_pulo = 1                  # Velocidade do pulo (em relação à altura da janela por segundo)
         self.valor_velocidade_objetos = 0.2             # Velocidade das torres e powerups (em relação à largura da janela por segundo)
 
         # Configurações do personagem
         self.personagem_posicao_horizontal = -0.45      # Posição horizontal do personagem (em relação à largura da janela)
-        self.personagem_largura = 0.15                  # Largura do personagem (em relação à largura da janela)
-        self.personagem_altura = 0.225                  # Altura do personagem (em relação à altura da janela)
+        self.personagem_largura = 0.10                  # Largura do personagem (em relação à largura da janela)
+        self.personagem_altura = self.personagem_largura * (928 / 857) * (self.janela_largura / self.janela_altura)  # Altura do personagem é calculada mantendo a proporção da imagem original
         self.personagem_vidas = 3                       # Número de vidas do personagem
         self.personagem_pontos = 0                      # Pontos do personagem
         self.personagem_duracao_invencibilidade = 3     # Duração da invencibilidade (em segundos)
@@ -32,5 +32,5 @@ class Parametros:
         # Configurações do power up
         self.power_up_largura = 0.04                    # Largura do power up (em relação à largura da janela)
         self.power_up_altura = self.power_up_largura * (self.janela_largura / self.janela_altura)  # Altura do power up (em relação à altura da janela)
-        self.power_up_tempo_entre_geracao = 10          # A cada janela de 10 segundos, um power up é gerado aleatoriamente
+        self.power_up_tempo_entre_geracao = 20          # A cada janela de 20 segundos, um power up é gerado aleatoriamente
     
